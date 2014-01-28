@@ -4,5 +4,4 @@ version: 0.0.2
 homepage: https://github.com/wilkerlucio/barrier-dart
 description: Elegant test framework for Dart
 dependencies:
-  future_goodies:
-    path: /Users/wilkerlucio/Development/dart/future_goodies
+  future_goodies: any

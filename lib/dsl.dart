@@ -10,8 +10,7 @@ void run(RunBlock block) {
   block();
 
   DotsReporter reporter = new DotsReporter();
-  reporter.suiteStart();
-  suite.rootScope.run(reporter).then((value) { reporter.suiteEnd(); });
+  suite.run(reporter);
 }
 
 void describe(String title, RunBlock block) {
@@ -22,4 +21,12 @@ void it(String title, RunBlock block) {
   suite.it(title, block);
 }
 
-Expectation expect(Object subject) => new Expectation(subject);
+void before(RunBlock block) {
+  suite.hook(#before, block);
+}
+
+void after(RunBlock block) {
+  suite.hook(#after, block);
+}
+
+Expectation expect(dynamic subject) => new Expectation(subject);

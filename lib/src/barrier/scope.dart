@@ -4,9 +4,11 @@ class Scope implements TestFragment {
   String title;
   Scope parent;
   List<TestFragment> children;
+  Map<Symbol, List<Function>> hooks;
 
   Scope(this.title, [this.parent]) {
     children = new List();
+    hooks = new Map<Symbol, List<Function>>();
 
     if (parent != null)
       parent.children.add(this);
@@ -22,10 +24,30 @@ class Scope implements TestFragment {
   Future run(Reporter reporter) {
     reporter.scopeStart(this);
 
-    return fg.sequence(children, (child) => child.run(reporter)).then((value) {
-      reporter.scopeEnd(this);
-      return value;
-    });
+    return runHooks(getHooks(#before))
+      .then((v) {
+        return fg.sequence(children, (child) => child.run(reporter)).then((value) {
+          reporter.scopeEnd(this);
+          return value;
+        });
+      }).then((v) {
+        return runHooks(getHooks(#after)).then((x) => v);
+      });
+  }
+
+  Future runHooks(List<Function> hooks) {
+    return fg.sequence(hooks, (Function hook) => new Future.sync(hook));
+  }
+
+  void addHook(Symbol hookType, Function hook) {
+    getHooks(hookType).add(hook);
+  }
+
+  List<Function> getHooks(Symbol hookType) {
+    if (hooks[hookType] == null)
+      hooks[hookType] = [];
+
+    return hooks[hookType];
   }
 
   Map toJSON() => {
