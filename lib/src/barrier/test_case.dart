@@ -1,12 +1,13 @@
 part of barrier;
 
-class TestCase implements TestFragment {
+class TestCase extends Object with NestedFlaggable<dynamic> implements TestFragment {
   String title;
   Function block;
   Scope parent;
 
-  TestCase(this.title, this.block, this.parent) {
+  TestCase(this.title, this.block, this.parent, {Map<Symbol,dynamic> flags}) {
     parent.children.add(this);
+    updateFlags(flags);
   }
 
   String get fullTitle => "${parent.fullTitle} $title";

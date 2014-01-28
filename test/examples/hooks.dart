@@ -1,3 +1,5 @@
+library barrier.examples.hooks;
+
 import 'package:barrier/dsl.dart';
 
 void runTests() {

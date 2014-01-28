@@ -1,12 +1,14 @@
 part of barrier;
 
-class Scope implements TestFragment {
+class Scope extends Object with NestedFlaggable<dynamic> implements TestFragment {
   String title;
   Scope parent;
   List<TestFragment> children;
   Map<Symbol, List<Function>> hooks;
 
-  Scope(this.title, [this.parent]) {
+  Scope(this.title, this.parent, {Map<Symbol,dynamic> flags}) {
+    updateFlags(flags);
+
     children = new List();
     hooks = new Map<Symbol, List<Function>>();
 

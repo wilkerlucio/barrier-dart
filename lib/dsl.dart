@@ -13,12 +13,12 @@ void run(RunBlock block) {
   suite.run(reporter);
 }
 
-void describe(String title, RunBlock block) {
-  suite.describe(title, block);
+void describe(String title, RunBlock block, {Map<Symbol,dynamic> flags}) {
+  suite.describe(title, block, flags: flags);
 }
 
-void it(String title, RunBlock block) {
-  suite.it(title, block);
+void it(String title, RunBlock block, {Map<Symbol,dynamic> flags}) {
+  suite.it(title, block, flags: flags);
 }
 
 void before(RunBlock block) {

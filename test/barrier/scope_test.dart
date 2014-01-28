@@ -2,40 +2,7 @@ library barrier.test.scope;
 
 import 'package:barrier/dsl.dart';
 import 'package:barrier/barrier.dart';
-import 'dart:async';
-
-class MockFragment implements TestFragment {
-  int callCount = 0;
-  List<Symbol> callLog;
-  Symbol logInfo;
-
-  MockFragment([this.callLog, this.logInfo = #fragment]) {
-    if (callLog == null)
-        callLog = [];
-  }
-
-  Future run(Reporter reporter) {
-    callCount += 1;
-    callLog.add(logInfo);
-    return new Future.value(null);
-  }
-}
-
-class CallLogger {
-  List<Symbol> calls;
-
-  CallLogger() {
-    calls = [];
-  }
-
-  Function hook(Symbol symbol) {
-    return () { calls.add(symbol); };
-  }
-
-  TestFragment fragment(Symbol symbol) {
-    return new MockFragment(calls, symbol);
-  }
-}
+import 'test_helpers.dart';
 
 void runTests() {
   describe("Scope", () {
@@ -46,42 +13,39 @@ void runTests() {
     });
 
     describe("#run", () {
-      Future testScopeRun(Scope scope, CallLogger callLogger, List<Symbol> expected) {
-        return scope.run(new VoidReporter()).whenComplete(() { expect(callLogger.calls).eql(expected); });
-      }
 
       it("runs the children of it", () {
         CallLogger calls = new CallLogger();
 
-        Scope scope = new Scope("title");
+        Scope scope = new Scope("title", null);
         scope.children.add(calls.fragment(#fragment));
         scope.children.add(calls.fragment(#fragment2));
 
-        return testScopeRun(scope, calls, [#fragment, #fragment2]);
+        return testFragmentRun(scope, calls, [#fragment, #fragment2]);
       });
 
       describe("before filters", () {
         it("runs before filter before the test", () {
           CallLogger calls = new CallLogger();
 
-          Scope scope = new Scope("");
+          Scope scope = new Scope("", null);
           scope.addHook(#before, calls.hook(#beforeFilter));
           scope.children.add(calls.fragment(#test));
 
-          return testScopeRun(scope, calls, [#beforeFilter, #test]);
+          return testFragmentRun(scope, calls, [#beforeFilter, #test]);
         });
 
         it("respect run order on multilevel", () {
           CallLogger calls = new CallLogger();
 
-          Scope scope = new Scope("");
+          Scope scope = new Scope("", null);
           scope.addHook(#before, calls.hook(#level1));
           scope.children.add(calls.fragment(#test));
           Scope scope2 = new Scope("", scope);
           scope2.addHook(#before, calls.hook(#level2));
           scope.addHook(#before, calls.hook(#level1out));
 
-          return testScopeRun(scope, calls, [#level1, #level1out, #test, #level2]);
+          return testFragmentRun(scope, calls, [#level1, #level1out, #test, #level2]);
         });
       });
 
@@ -89,24 +53,24 @@ void runTests() {
         it("runs after filter after the test", () {
           CallLogger calls = new CallLogger();
 
-          Scope scope = new Scope("");
+          Scope scope = new Scope("", null);
           scope.addHook(#after, calls.hook(#afterFilter));
           scope.children.add(calls.fragment(#test));
 
-          return testScopeRun(scope, calls, [#test, #afterFilter]);
+          return testFragmentRun(scope, calls, [#test, #afterFilter]);
         });
 
         it("respect run order on multilevel", () {
           CallLogger calls = new CallLogger();
 
-          Scope scope = new Scope("");
+          Scope scope = new Scope("", null);
           scope.addHook(#after, calls.hook(#level1));
           Scope scope2 = new Scope("", scope);
           scope.children.add(calls.fragment(#test));
           scope2.addHook(#after, calls.hook(#level2));
           scope.addHook(#after, calls.hook(#level1out));
 
-          return testScopeRun(scope, calls, [#level2, #test, #level1, #level1out]);
+          return testFragmentRun(scope, calls, [#level2, #test, #level1, #level1out]);
         });
       });
     });
