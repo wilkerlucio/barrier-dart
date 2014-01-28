@@ -22,7 +22,7 @@ class Scope implements TestFragment {
   Future run(Reporter reporter) {
     reporter.scopeStart(this);
 
-    return forEachAsync(children, (child) => child.run(reporter)).then((value) {
+    return fg.sequence(children, (child) => child.run(reporter)).then((value) {
       reporter.scopeEnd(this);
       return value;
     });

@@ -1,4 +1,6 @@
-part of barrier;
+library barrier.dsl;
+
+import 'package:barrier/barrier.dart';
 
 typedef void RunBlock();
 
@@ -19,3 +21,5 @@ void describe(String title, RunBlock block) {
 void it(String title, RunBlock block) {
   suite.it(title, block);
 }
+
+Expectation expect(Object subject) => new Expectation(subject);

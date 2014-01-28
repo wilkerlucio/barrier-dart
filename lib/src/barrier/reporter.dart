@@ -4,7 +4,6 @@ class Reporter {
   DateTime _startTime;
   int _testCount = 0;
   int _passCount = 0;
-  int _failCount = 0;
 
   void suiteStart() {
     _startTime = new DateTime.now();
@@ -20,10 +19,6 @@ class Reporter {
     _passCount += 1;
   }
 
-  void testFail(TestCase test, dynamic err) {
-    _failCount += 1;
-  }
-
   void testEnd(TestCase test) {}
 
   void scopeEnd(Scope scope) {}
@@ -37,9 +32,6 @@ class Reporter {
     Duration difference = new DateTime.now().difference(_startTime);
 
     print("$_passCount passing (${difference.inMilliseconds}ms)");
-
-    if (_failCount > 0)
-      print("$_failCount failing");
   }
 }
 
@@ -54,15 +46,20 @@ class DotsReporter extends Reporter {
     stdout.write(".");
   }
 
-  void testFail(TestCase test, err) {
-    super.testFail(test, err);
-
-    stdout.write("F");
-  }
-
   void suiteEnd() {
     print("");
 
     super.suiteEnd();
   }
+}
+
+class VoidReporter extends Reporter {
+  void suiteStart() {}
+  void scopeStart(Scope scope) {}
+  void testStart(TestCase test) {}
+  void testPass(TestCase test) {}
+  void testFail(TestCase test, dynamic err) {}
+  void testEnd(TestCase test) {}
+  void scopeEnd(Scope scope) {}
+  void suiteEnd() {}
 }

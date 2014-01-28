@@ -1,13 +1,13 @@
 library barrier;
 
 import 'dart:async';
-import 'package:quiver/async.dart';
 import 'dart:io';
 
-part 'reporter.dart';
-part 'scope.dart';
-part 'suite.dart';
-part 'test_case.dart';
+import 'package:future_goodies/future_goodies.dart' as fg;
 
-part 'test.dart';
-part 'expect.dart';
+part 'src/barrier/reporter.dart';
+part 'src/barrier/scope.dart';
+part 'src/barrier/suite.dart';
+part 'src/barrier/test_case.dart';
+
+part 'src/barrier/expect.dart';

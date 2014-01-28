@@ -1,6 +1,6 @@
-library barrier.test.hello;
+library barrier.test.test_case;
 
-import 'package:barrier/barrier.dart';
+import 'package:barrier/dsl.dart';
 
 void runTests() {
   for (int i = 0; i < 1; i++) {
@@ -16,7 +16,6 @@ void runTests() {
       });
 
       it("fails mizerably...", () {
-        expect(3) == 5;
       });
     });
   }

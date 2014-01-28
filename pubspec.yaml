@@ -2,5 +2,6 @@ name: barrier
 author: Wilker Lúcio <wilkerlucio@gmail.com>
 version: 0.0.1
 description: Elegant test framework for Dart
-dependencies:
-  quiver: any
+dev_dependencies:
+  future_goodies:
+    path: /Users/wilkerlucio/Development/dart/future_goodies

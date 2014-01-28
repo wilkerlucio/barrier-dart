@@ -31,7 +31,5 @@ void _compareLists(List subject, List other) {
     throw new Exception();
 
   for (int i = 0; i < subject.length; i++)
-    expect(subject[i]).eql(other[i]);
+    new Expectation(subject[i]).eql(other[i]);
 }
-
-Expectation expect(Object subject) => new Expectation(subject);

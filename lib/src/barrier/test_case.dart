@@ -22,9 +22,6 @@ class TestCase implements TestFragment {
 
     return new Future.sync(block).then((value) {
       reporter.testPass(this);
-    }).catchError((e) {
-      reporter.testFail(this, e);
-    }).whenComplete(() {
       reporter.testEnd(this);
     });
   }
