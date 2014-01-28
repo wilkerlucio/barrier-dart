@@ -1,6 +1,7 @@
 name: barrier
 author: Wilker Lúcio <wilkerlucio@gmail.com>
 version: 0.0.1
+homepage: https://github.com/wilkerlucio/barrier-dart
 description: Elegant test framework for Dart
 dev_dependencies:
   future_goodies:
