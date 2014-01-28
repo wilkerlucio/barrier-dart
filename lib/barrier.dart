@@ -1,6 +1,8 @@
 library barrier;
 
 import 'dart:async';
+import 'package:quiver/async.dart';
+import 'dart:io';
 
 part 'reporter.dart';
 part 'scope.dart';

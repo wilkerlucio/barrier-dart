@@ -7,7 +7,7 @@ Suite suite = new Suite();
 void run(RunBlock block) {
   block();
 
-  SimpleReporter reporter = new SimpleReporter();
+  DotsReporter reporter = new DotsReporter();
   reporter.suiteStart();
   suite.rootScope.run(reporter).then((value) { reporter.suiteEnd(); });
 }

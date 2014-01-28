@@ -1,4 +1,6 @@
 name: barrier
-description: A sample command-line application
-#dependencies:
-#  unittest: any
+author: Wilker Lúcio <wilkerlucio@gmail.com>
+version: 0.0.1
+description: Elegant test framework for Dart
+dependencies:
+  quiver: any

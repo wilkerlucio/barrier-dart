@@ -1,6 +1,6 @@
 part of barrier;
 
-class TestCase implements ReportableRunnable {
+class TestCase implements TestFragment {
   String title;
   Function block;
   Scope parent;
@@ -19,6 +19,7 @@ class TestCase implements ReportableRunnable {
 
   Future run(Reporter reporter) {
     reporter.testStart(this);
+
     return new Future.sync(block).then((value) {
       reporter.testPass(this);
     }).catchError((e) {

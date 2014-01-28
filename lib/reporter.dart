@@ -1,50 +1,68 @@
 part of barrier;
 
-abstract class Reporter {
-  void suiteStart();
-  void suiteEnd();
-  void scopeStart(Scope scope);
-  void scopeEnd(Scope scope);
-  void testStart(TestCase test);
-  void testEnd(TestCase test);
-  void testPass(TestCase test);
-  void testFail(TestCase test, Error err);
-}
+class Reporter {
+  DateTime _startTime;
+  int _testCount = 0;
+  int _passCount = 0;
+  int _failCount = 0;
 
-abstract class ReportableRunnable {
-  Future run(Reporter reporter);
-}
-
-class SimpleReporter extends Reporter {
-  void scopeEnd(Scope scope) {
-    print("Scope ended ${scope.title}");
+  void suiteStart() {
+    _startTime = new DateTime.now();
   }
 
-  void scopeStart(Scope scope) {
-    print("Scope started ${scope.title}");
-  }
-
-  void testEnd(TestCase test) {
-    print("Test end ${test.fullTitle}");
-  }
+  void scopeStart(Scope scope) {}
 
   void testStart(TestCase test) {
-    print("Test start ${test.fullTitle}");
-  }
-
-  void testFail(TestCase test, err) {
-    print("Test failed $err");
+    _testCount += 1;
   }
 
   void testPass(TestCase test) {
-    print("Test passed ${test.fullTitle}");
+    _passCount += 1;
+  }
+
+  void testFail(TestCase test, dynamic err) {
+    _failCount += 1;
+  }
+
+  void testEnd(TestCase test) {}
+
+  void scopeEnd(Scope scope) {}
+
+  void suiteEnd() {
+    print("");
+    print(summary());
+  }
+
+  String summary() {
+    Duration difference = new DateTime.now().difference(_startTime);
+
+    print("$_passCount passing (${difference.inMilliseconds}ms)");
+
+    if (_failCount > 0)
+      print("$_failCount failing");
+  }
+}
+
+abstract class TestFragment {
+  Future run(Reporter reporter);
+}
+
+class DotsReporter extends Reporter {
+  void testPass(TestCase test) {
+    super.testPass(test);
+
+    stdout.write(".");
+  }
+
+  void testFail(TestCase test, err) {
+    super.testFail(test, err);
+
+    stdout.write("F");
   }
 
   void suiteEnd() {
-    print("Suite ended");
-  }
+    print("");
 
-  void suiteStart() {
-    print("Suite started");
+    super.suiteEnd();
   }
 }

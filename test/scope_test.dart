@@ -6,7 +6,7 @@ void runTests() {
   describe("Scope", () {
     describe("#constructor", () {
       it("initializes", () {
-
+        assert(false);
       });
     });
   });
