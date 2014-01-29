@@ -24,6 +24,34 @@ void runTests() {
       it("hello again", () { expect(counter++) == 6; });
       after(() { expect(counter++) == 8; });
     });
+
+    List<Symbol> calls = [];
+    int count = 0;
+
+    describe("each each...", () {
+      beforeEach(() { calls.add(#beforeOut); });
+      afterEach(() { calls.add(#afterOut); });
+
+      it("out test", () { calls.add(#outTest); });
+
+      describe("inner scope", () {
+        beforeEach(() { calls.add(#beforeInner); });
+        afterEach(() { calls.add(#afterIn); });
+
+        it("is some test", () { calls.add(#innerTest); });
+      });
+
+      it("out test after", () { calls.add(#outTestAfter); });
+      beforeEach(() { calls.add(#beforeEnd); });
+    });
+
+    it("runs the beforeEach and afterEach on proper order", () {
+      expect(calls).eql([
+        #beforeOut, #beforeEnd, #outTest, #afterOut,
+        #beforeOut, #beforeEnd, #beforeInner, #innerTest, #afterIn, #afterOut,
+        #beforeOut, #beforeEnd, #outTestAfter, #afterOut
+      ]);
+    });
   });
 }
 

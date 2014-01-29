@@ -29,4 +29,12 @@ void after(RunBlock block) {
   suite.hook(#after, block);
 }
 
+void beforeEach(RunBlock block) {
+  suite.hook(#beforeEach, block);
+}
+
+void afterEach(RunBlock block) {
+  suite.hook(#afterEach, block);
+}
+
 Expectation expect(dynamic subject) => new Expectation(subject);
