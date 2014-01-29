@@ -56,4 +56,16 @@ class Scope extends Object with NestedFlaggable<dynamic> implements TestFragment
     'title': title,
     'children': children.map((c) => c.toJSON())
   };
+
+  List<List<Function>> getHooksWithAncestors(Symbol symbol) {
+    Scope current = this;
+    List<List<Function>> hooks = new List<List<Function>>();
+
+    do {
+      hooks.add(current.getHooks(symbol));
+      current = current.parent;
+    } while (current != null);
+
+    return hooks;
+  }
 }

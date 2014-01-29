@@ -21,9 +21,20 @@ class TestCase extends Object with NestedFlaggable<dynamic> implements TestFragm
   Future run(Reporter reporter) {
     reporter.testStart(this);
 
-    return new Future.sync(block).then((value) {
-      reporter.testPass(this);
-      reporter.testEnd(this);
-    });
+    return parent.runHooks(beforeEachHooks)
+                 .then(runBlock(reporter))
+                 .then((v) => parent.runHooks(afterEachHooks));
   }
+
+  Function runBlock(Reporter reporter) {
+    return (v) {
+      return new Future.sync(block).then((value) {
+        reporter.testPass(this);
+        reporter.testEnd(this);
+      });
+    };
+  }
+
+  List<Function> get beforeEachHooks => parent.getHooksWithAncestors(#beforeEach).reversed.expand((v) => v).toList();
+  List<Function> get afterEachHooks => parent.getHooksWithAncestors(#afterEach).expand((v) => v).toList();
 }
