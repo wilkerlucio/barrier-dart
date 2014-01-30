@@ -5,7 +5,7 @@ class Suite {
   List<Scope> children;
 
   Suite() {
-    rootScope = new Scope(null, null);
+    rootScope = new Scope("", null);
     children = [rootScope];
   }
 

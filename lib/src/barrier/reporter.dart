@@ -43,12 +43,10 @@ class DotsReporter extends Reporter {
   void testPass(TestCase test) {
     super.testPass(test);
 
-    stdout.write(".");
+    print(test.fullTitle);
   }
 
   void suiteEnd() {
-    print("");
-
     super.suiteEnd();
   }
 }

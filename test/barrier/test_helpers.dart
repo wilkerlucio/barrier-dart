@@ -38,5 +38,5 @@ class CallLogger {
 }
 
 Future testFragmentRun(TestFragment fragment, CallLogger callLogger, List<Symbol> expected) {
-  return fragment.run(new VoidReporter()).whenComplete(() { expect(callLogger.calls).eql(expected); });
+  return fragment.run(new VoidReporter()).whenComplete(() { expect(callLogger.calls).to(beDeepEqual(expected)); });
 }

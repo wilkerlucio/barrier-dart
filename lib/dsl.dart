@@ -1,6 +1,7 @@
 library barrier.dsl;
 
 import 'package:barrier/barrier.dart';
+export 'package:barrier/expect.dart';
 
 typedef void RunBlock();
 
@@ -36,5 +37,3 @@ void beforeEach(RunBlock block) {
 void afterEach(RunBlock block) {
   suite.hook(#afterEach, block);
 }
-
-Expectation expect(dynamic subject) => new Expectation(subject);

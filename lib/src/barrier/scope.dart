@@ -18,7 +18,7 @@ class Scope extends Object with NestedFlaggable<dynamic> implements TestFragment
 
   String get fullTitle {
     if (parent != null)
-      return "${parent.fullTitle} $title";
+      return "${parent.fullTitle} $title".trim();
     else
       return title;
   }

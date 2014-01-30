@@ -6,14 +6,28 @@ import 'test_helpers.dart';
 
 void runTests() {
   describe("Scope", () {
-    describe("#constructor", () {
-      it("initializes", () {
-        expect(true) == true;
+    describe("fullTitle", () {
+      it("returns the title when there is no parent", () {
+        Scope scope = new Scope("title", null);
+        expect(scope.fullTitle).to(beEqual("title"));
+      });
+
+      it('returns parent titles concateneted', () {
+        Scope root = new Scope('master', null);
+        Scope child = new Scope('slave', root);
+
+        expect(child.fullTitle).to(beEqual('master slave'));
+      });
+
+      it('truncates the final string', () {
+        Scope root = new Scope('', null);
+        Scope child = new Scope('slave', root);
+
+        expect(child.fullTitle).to(beEqual('slave'));
       });
     });
 
     describe("#run", () {
-
       it("runs the children of it", () {
         CallLogger calls = new CallLogger();
 

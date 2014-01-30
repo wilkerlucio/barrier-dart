@@ -46,11 +46,11 @@ void runTests() {
     });
 
     it("runs the beforeEach and afterEach on proper order", () {
-      expect(calls).eql([
+      expect(calls).to(beDeepEqual([
         #beforeOut, #beforeEnd, #outTest, #afterOut,
         #beforeOut, #beforeEnd, #beforeInner, #innerTest, #afterIn, #afterOut,
         #beforeOut, #beforeEnd, #outTestAfter, #afterOut
-      ]);
+      ]));
     });
   });
 }
